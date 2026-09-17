@@ -1,0 +1,121 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Schedule — Расписание</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="app">
+    <aside class="sidebar">
+        <div class="logo">НСМК</div>
+        <nav>
+            <a class="active">📅 Расписание</a>
+            <a onclick="openTeachers()">👤 Преподаватели</a>
+            <a onclick="openSubjects()">📚 Дисциплины</a>
+            <a onclick="openGroups()">👥 Группы</a>
+            <a onclick="importJSON()">📂 Импорт</a>
+            <a onclick="exportJSON()">💾 Экспорт</a>
+        </nav>
+    </aside>
+    <main class="main">
+        <header class="topbar">
+            <h1>Расписание</h1>
+            <div class="actions">
+                <button class="blue" onclick="openAddLesson()">+ Новый план</button>
+                <button onclick="loadAll()">💾 Сохранить</button>
+                <button onclick="clearAll()">🗑 Очистить</button>
+                <button onclick="window.print()">🖨 Печать</button>
+                <button onclick="toggleTheme()" id="themeBtn" title="Сменить тему">🌙</button>
+                <a href="/logout" class="logout-btn" title="Выйти">🚪</a>
+            </div>
+        </header>
+            <div class="filters">
+            <input type="date" id="datePicker" onchange="onDateChange()">
+            <button onclick="goToday()">Сегодня</button>
+            <select id="filterGroup"><option value="">Все группы</option></select>
+            <input type="text" placeholder="Поиск по группам...">
+        </div>
+
+        <div id="dateLabel" class="date-label"></div>
+        <div class="schedule-wrap"><table id="schedule"></table></div>
+    </main>
+   <aside class="rightbar">
+    <h2>Преподаватели</h2>
+    <input id="teacherSearch" placeholder="Поиск преподавателя...">
+    <div id="teacherList"></div>
+
+    <h2 class="mt">Расписание звонков</h2>
+    <table class="bells">
+        <tr>
+            <th>Пара</th>
+            <th>Все дни</th>
+            <th>Пн</th>
+        </tr>
+        <tr><td>1</td><td>9:00–10:35</td><td>9:00–11:35</td></tr>
+        <tr><td>2</td><td>10:45–12:20</td><td>11:45–13:20</td></tr>
+        <tr><td>3</td><td>13:05–14:40</td><td>14:05–15:40</td></tr>
+        <tr><td>4</td><td>14:50–16:25</td><td>15:50–17:25</td></tr>
+    </table>
+
+    <h2 class="mt">Быстрые действия</h2>
+    <button class="wide" onclick="clearAll()">🗑 Очистить расписание</button>
+    <button class="wide" onclick="deleteLast()">🗑 Удалить занятие</button>
+</aside>
+
+</div>
+
+<!-- МОДАЛЬНОЕ ОКНО -->
+<div class="modal" id="modal">
+    <div class="modal-box">
+        <h2 id="modalTitle">Добавление занятия</h2>
+
+        <input type="hidden" id="mId">
+
+        <label>Группа
+            <select id="mGroup"></select>
+        </label>
+        <label>День
+            <select id="mDay">
+                <option>Понедельник</option><option>Вторник</option>
+                <option>Среда</option><option>Четверг</option><option>Пятница</option>
+            </select>
+        </label>
+        <label>Преподаватель
+            <select id="mTeacher" onchange="fillSubjects()"></select>
+        </label>
+        <label>Дисциплина
+            <select id="mSubject"></select>
+        </label>
+        <label>1 неделя
+            <select id="mW1">
+                <option value="0">—</option>
+                <option value="1">1 пара</option><option value="2">2 пара</option>
+                <option value="3">3 пара</option><option value="4">4 пара</option>
+            </select>
+        </label>
+        <label>2 неделя
+            <select id="mW2">
+                <option value="0">—</option>
+                <option value="1">1 пара</option><option value="2">2 пара</option>
+                <option value="3">3 пара</option><option value="4">4 пара</option>
+            </select>
+        </label>
+        <label>Кабинет <input id="mRoom" placeholder="305"></label>
+        <label>Тип
+            <select id="mType">
+                <option>Лекция</option><option>Практика</option><option>Лаборатория</option>
+            </select>
+        </label>
+
+        <div class="modal-actions">
+            <button onclick="closeModal()">Отмена</button>
+            <button class="blue" onclick="saveLesson()">Сохранить</button>
+        </div>
+    </div>
+</div>
+
+<script src="/static/script.js"></script>
+</body>
+</html>
+
